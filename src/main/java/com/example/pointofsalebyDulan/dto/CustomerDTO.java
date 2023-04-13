@@ -29,6 +29,15 @@ public class CustomerDTO {
         this.isActive = isActive;
     }
 
+    public CustomerDTO(String name, String nic, double salary, String address, ArrayList tp, boolean isActive) {
+        this.name = name;
+        this.nic = nic;
+        this.salary = salary;
+        this.address = address;
+        this.tp = tp;
+        this.isActive = isActive;
+    }
+
     public int getId() {
         return id;
     }

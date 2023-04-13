@@ -8,6 +8,8 @@ import com.example.pointofsalebyDulan.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,10 +17,10 @@ public class CustomerServiceIMPL implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
     @Override
+
     public String saveCustomerInIMPL(CustomerDTO customerDTO) {
 
         Customer customer = new Customer(
-                customerDTO.getId(),
                 customerDTO.getName(),
                 customerDTO.getNic(),
                 customerDTO.getSalary(),
@@ -48,7 +50,7 @@ public class CustomerServiceIMPL implements CustomerService {
         Optional <Customer> customerFromDB = customerRepo.findById(customerId);
         if(customerFromDB.isPresent()){
             CustomerDTO custDTO = new CustomerDTO(
-                customerFromDB.get().getId(),
+                    customerFromDB.get().getId(),
                     customerFromDB.get().getName(),
                     customerFromDB.get().getNic(),
                     customerFromDB.get().getSalary(),
@@ -60,4 +62,31 @@ public class CustomerServiceIMPL implements CustomerService {
         }
         return null;
     }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> entityTypeCustomers = customerRepo.findAll();
+        List<CustomerDTO> dtoTypeCustomers = new ArrayList<>();
+        for (Customer c: entityTypeCustomers
+             ) {
+            CustomerDTO custDTO = new CustomerDTO(
+                    c.getId(),
+                    c.getName(),
+                    c.getNic(),
+                    c.getSalary(),
+                    c.getAddress(),
+                    c.getTp(),
+                    c.isActive()
+            );
+            dtoTypeCustomers.add(custDTO);
+        }
+        return dtoTypeCustomers;
+    }
+
+    @Override
+    public String deleteCustomerIMPL(int customerId) {
+        customerRepo.deleteById(customerId);
+        return "deleted";
+    }
+
 }

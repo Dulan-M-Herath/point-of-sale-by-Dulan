@@ -7,6 +7,8 @@ import com.example.pointofsalebyDulan.service.impl.CustomerServiceIMPL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/customer")
@@ -33,5 +35,18 @@ public class Customer {
     public CustomerDTO searchCustomer(@RequestParam (value= "id") int customerId){
         CustomerDTO foundCustomer = customerService.searchCustomerIMPL(customerId);
         return foundCustomer;
+    }
+
+    @GetMapping(path = "/get-all-custoemr")
+    public List<CustomerDTO> allCustomers(){
+        List<CustomerDTO> getCustomer = customerService.getAllCustomers();
+        return getCustomer;
+    }
+
+    @DeleteMapping(path = "/delete-customer",params = "id")
+    public String deleteCustomer(@RequestParam(value = "id") int customerId){
+        System.out.println("deleted");
+        String deletedCustomer = customerService.deleteCustomerIMPL(customerId);
+        return deletedCustomer;
     }
 }
