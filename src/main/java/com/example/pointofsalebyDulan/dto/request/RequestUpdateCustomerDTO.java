@@ -1,19 +1,19 @@
 package com.example.pointofsalebyDulan.dto.request;
 
-public class RequestCustomerDTO {
+public class RequestUpdateCustomerDTO {
     private int id;
     private String name;
     private String nic;
     private double salary;
 
-    public RequestCustomerDTO(int id, String name, String nic, double salary) {
+    public RequestUpdateCustomerDTO(int id, String name, String nic, double salary) {
         this.id = id;
         this.name = name;
         this.nic = nic;
         this.salary = salary;
     }
 
-    public RequestCustomerDTO() {
+    public RequestUpdateCustomerDTO() {
     }
 
     @Override

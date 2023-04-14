@@ -1,7 +1,7 @@
 package com.example.pointofsalebyDulan.service.impl;
 
 import com.example.pointofsalebyDulan.dto.CustomerDTO;
-import com.example.pointofsalebyDulan.dto.request.RequestCustomerDTO;
+import com.example.pointofsalebyDulan.dto.request.RequestUpdateCustomerDTO;
 import com.example.pointofsalebyDulan.entity.Customer;
 import com.example.pointofsalebyDulan.repo.CustomerRepo;
 import com.example.pointofsalebyDulan.service.CustomerService;
@@ -16,6 +16,7 @@ import java.util.Optional;
 public class CustomerServiceIMPL implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
+
     @Override
 
     public String saveCustomerInIMPL(CustomerDTO customerDTO) {
@@ -29,26 +30,26 @@ public class CustomerServiceIMPL implements CustomerService {
                 customerDTO.isActive()
         );
         customerRepo.save(customer);
-        return (customerDTO.getName()+" , ID is "+customerDTO.getId()+" is saved");
+        return (customerDTO.getName() + " , ID is " + customerDTO.getId() + " is saved");
     }
 
     @Override
-    public String updateCustomerIMPL(RequestCustomerDTO requestCustomerDTO) {
-        Customer updateCustomer = customerRepo.getById(requestCustomerDTO.getId());
+    public String updateCustomerIMPL(RequestUpdateCustomerDTO requestUpdateCustomerDTO) {
+        Customer updateCustomer = customerRepo.getById(requestUpdateCustomerDTO.getId());
 
-        updateCustomer.setName(requestCustomerDTO.getName());
-        updateCustomer.setNic(requestCustomerDTO.getNic());
-        updateCustomer.setSalary(requestCustomerDTO.getSalary());
+        updateCustomer.setName(requestUpdateCustomerDTO.getName());
+        updateCustomer.setNic(requestUpdateCustomerDTO.getNic());
+        updateCustomer.setSalary(requestUpdateCustomerDTO.getSalary());
 
         customerRepo.save(updateCustomer);
 
-        return requestCustomerDTO.getName()+" is updated";
+        return requestUpdateCustomerDTO.getName() + " is updated";
     }
 
     @Override
     public CustomerDTO searchCustomerIMPL(int customerId) {
-        Optional <Customer> customerFromDB = customerRepo.findById(customerId);
-        if(customerFromDB.isPresent()){
+        Optional<Customer> customerFromDB = customerRepo.findById(customerId);
+        if (customerFromDB.isPresent()) {
             CustomerDTO custDTO = new CustomerDTO(
                     customerFromDB.get().getId(),
                     customerFromDB.get().getName(),
@@ -67,8 +68,8 @@ public class CustomerServiceIMPL implements CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> entityTypeCustomers = customerRepo.findAll();
         List<CustomerDTO> dtoTypeCustomers = new ArrayList<>();
-        for (Customer c: entityTypeCustomers
-             ) {
+        for (Customer c : entityTypeCustomers
+        ) {
             CustomerDTO custDTO = new CustomerDTO(
                     c.getId(),
                     c.getName(),
@@ -87,6 +88,25 @@ public class CustomerServiceIMPL implements CustomerService {
     public String deleteCustomerIMPL(int customerId) {
         customerRepo.deleteById(customerId);
         return "deleted";
+    }
+
+    @Override
+    public CustomerDTO searchCustomerByNicIMPL(String customerNic) {
+        Optional<Customer> customerFromDB = customerRepo.findCustomersByNicEquals(customerNic);
+        if (customerFromDB.isPresent()) {
+            CustomerDTO custDTO = new CustomerDTO(
+                    customerFromDB.get().getId(),
+                    customerFromDB.get().getName(),
+                    customerFromDB.get().getNic(),
+                    customerFromDB.get().getSalary(),
+                    customerFromDB.get().getAddress(),
+                    customerFromDB.get().getTp(),
+                    customerFromDB.get().isActive()
+            );
+            return custDTO;
+        }
+
+        return null;
     }
 
 }

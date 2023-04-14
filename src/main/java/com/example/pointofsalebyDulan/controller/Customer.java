@@ -1,9 +1,8 @@
 package com.example.pointofsalebyDulan.controller;
 
 import com.example.pointofsalebyDulan.dto.CustomerDTO;
-import com.example.pointofsalebyDulan.dto.request.RequestCustomerDTO;
+import com.example.pointofsalebyDulan.dto.request.RequestUpdateCustomerDTO;
 import com.example.pointofsalebyDulan.service.CustomerService;
-import com.example.pointofsalebyDulan.service.impl.CustomerServiceIMPL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +22,8 @@ public class Customer {
     }
 
     @PutMapping(path = "/update")
-    public String updateCustomer(@RequestBody RequestCustomerDTO requestCustomerDTO){
-        String updateCust = customerService.updateCustomerIMPL(requestCustomerDTO);
+    public String updateCustomer(@RequestBody RequestUpdateCustomerDTO requestUpdateCustomerDTO){
+        String updateCust = customerService.updateCustomerIMPL(requestUpdateCustomerDTO);
         return updateCust;
     }
 
@@ -49,4 +48,15 @@ public class Customer {
         String deletedCustomer = customerService.deleteCustomerIMPL(customerId);
         return deletedCustomer;
     }
+
+    @GetMapping(
+            path = "/search-by-nic",
+            params = "nic"
+    )
+    public CustomerDTO searchCustomer(@RequestParam (value= "nic") String customerNic){
+        CustomerDTO foundCustomer = customerService.searchCustomerByNicIMPL(customerNic);
+        return foundCustomer;
+    }
+
+
 }
