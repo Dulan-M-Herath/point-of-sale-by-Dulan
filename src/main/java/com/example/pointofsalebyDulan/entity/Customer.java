@@ -7,6 +7,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Entity
 @TypeDefs({
@@ -37,6 +38,9 @@ public class Customer {
 
     @Column(name = "active_status")
     private boolean isActive;
+
+    @OneToMany(mappedBy="customer")
+    private Set<Order> orderSet;
 
     public Customer(String name, String nic, double salary, String address, ArrayList tp, boolean isActive) {
         this.name = name;

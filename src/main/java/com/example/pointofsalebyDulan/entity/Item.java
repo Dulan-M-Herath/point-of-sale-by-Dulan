@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Table(name = "Item")
 @Entity
@@ -37,5 +38,8 @@ public class Item {
 
     @Column(name = "active_status")
     private boolean activeStatus;
+
+    @OneToMany(mappedBy="items")
+    private Set<OrderDetails> orderDetails;
 
 }

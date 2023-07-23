@@ -1,14 +1,17 @@
 package com.example.pointofsalebyDulan.service.impl;
 
 import com.example.pointofsalebyDulan.dto.ItemDTO;
+import com.example.pointofsalebyDulan.dto.paginated.PaginatedResponseItemDto;
 import com.example.pointofsalebyDulan.dto.request.RequestItemSaveDTO;
 import com.example.pointofsalebyDulan.entity.Item;
+import com.example.pointofsalebyDulan.exception.NotFoundException;
 import com.example.pointofsalebyDulan.repo.ItemRepo;
 import com.example.pointofsalebyDulan.service.ItemService;
 import com.example.pointofsalebyDulan.util.mappers.ItemMapper;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public class ItemServiceIMPL implements ItemService {
     private ItemRepo itemRepo;
 
     @Autowired
-    private ItemMapper itemMapper; //Ignore this error if any
+    private ItemMapper itemMapper;
 
     @Override
     public String saveItemInIMPL(RequestItemSaveDTO itemSaveDTO) {
@@ -42,5 +45,14 @@ public class ItemServiceIMPL implements ItemService {
 //        }.getType());
         List<ItemDTO> item = itemMapper.entityToDto(items);
         return item;
+    }
+
+    @Override
+    public PaginatedResponseItemDto getAllItemsActive(int page, int size, boolean activeState) {
+        Page<Item> items = itemRepo.findAllByActiveStatusEquals(activeState, PageRequest.of(page, size));
+        if(items.getSize()<1){
+            throw new NotFoundException("No data found");
+        }
+        return new PaginatedResponseItemDto(itemMapper.pageToList(items),itemRepo.countAllByActiveStatusEquals(activeState));
     }
 }

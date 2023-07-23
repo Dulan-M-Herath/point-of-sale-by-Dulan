@@ -1,12 +1,11 @@
 package com.example.pointofsalebyDulan.controller;
 
-import com.example.pointofsalebyDulan.dto.CustomerDTO;
 import com.example.pointofsalebyDulan.dto.ItemDTO;
+import com.example.pointofsalebyDulan.dto.paginated.PaginatedResponseItemDto;
 import com.example.pointofsalebyDulan.dto.request.RequestItemSaveDTO;
 import com.example.pointofsalebyDulan.exception.NotFoundException;
 import com.example.pointofsalebyDulan.service.ItemService;
 import com.example.pointofsalebyDulan.util.StandardResponse;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +59,21 @@ public class Item {
         }
 
         // Otherwise we can use return(new ResponseEntity<StandardResponse>(
-    }    //                new StandardResponse(200,"Success",itemByName), HttpStatus.OK);
+    }//                new StandardResponse(200,"Success",itemByName), HttpStatus.OK);
+
+    @GetMapping(
+            path = "/get-all-item-by-status",
+            params = {"page","size","activeState"}
+    )
+    public ResponseEntity<StandardResponse> getAllItemsActive(
+            @RequestParam(value="page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "activeState") boolean activeState
+    ){
+        PaginatedResponseItemDto paginatedResponseItemDto = itemService.getAllItemsActive(page,size,activeState);
+        ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Success", paginatedResponseItemDto), HttpStatus.OK);
+
+        return response;
+    }
 }
