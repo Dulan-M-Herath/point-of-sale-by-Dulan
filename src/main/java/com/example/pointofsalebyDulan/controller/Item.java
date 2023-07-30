@@ -51,7 +51,6 @@ public class Item {
         if (itemByName.size() > 0) {
             ResponseEntity<StandardResponse> response = new ResponseEntity<StandardResponse>(
                     new StandardResponse(200, "Success", itemByName), HttpStatus.OK);
-
             return response;
 
         } else {

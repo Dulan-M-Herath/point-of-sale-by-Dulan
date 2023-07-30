@@ -1,5 +1,7 @@
 package com.example.pointofsalebyDulan.service.impl;
 
+import com.example.pointofsalebyDulan.dto.QueryInterface.OrderDetailsInterface;
+import com.example.pointofsalebyDulan.dto.paginated.PaginatedResponseOrderDetails;
 import com.example.pointofsalebyDulan.dto.request.RequestOrderSaveDto;
 import com.example.pointofsalebyDulan.entity.Order;
 import com.example.pointofsalebyDulan.entity.OrderDetails;
@@ -11,6 +13,7 @@ import com.example.pointofsalebyDulan.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -59,5 +62,13 @@ public class OrderServiceIMPL implements OrderService {
         }
 
         return "Done, Order saved";
+    }
+
+    @Override
+    public PaginatedResponseOrderDetails getAllOrderDetails(boolean status, int page, int size) {
+
+    List<OrderDetailsInterface> orderDetailsInterfaces = orderRepo.getAllOrders(status, PageRequest.of(page,size));
+
+        return null;
     }
 }

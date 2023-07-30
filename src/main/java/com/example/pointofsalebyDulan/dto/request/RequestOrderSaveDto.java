@@ -16,5 +16,6 @@ public class RequestOrderSaveDto {
     private int customer;
     private Date date;
     private double amount;
+    private boolean activeState;
     private List<RequestOrderDetailsSave> orderDetails;
 }

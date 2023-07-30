@@ -38,6 +38,9 @@ public class Order {
     @OneToMany(mappedBy="orders")
     private Set<OrderDetails> orderDetails;
 
+    @Column(name = "active_state",columnDefinition = "TINYINT default 1")
+    private boolean activeState;
+
 
     public Order(Customer customer, Date date, double amount) {
         this.customer = customer;
