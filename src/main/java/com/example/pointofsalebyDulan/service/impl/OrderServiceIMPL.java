@@ -2,7 +2,8 @@ package com.example.pointofsalebyDulan.service.impl;
 
 import com.example.pointofsalebyDulan.dto.QueryInterface.OrderDetailsInterface;
 import com.example.pointofsalebyDulan.dto.paginated.PaginatedResponseOrderDetails;
-import com.example.pointofsalebyDulan.dto.request.RequestOrderSaveDto;
+import com.example.pointofsalebyDulan.dto.request.RequestOrderSaveDTO;
+import com.example.pointofsalebyDulan.dto.response.ResponseOrderDetailsDTO;
 import com.example.pointofsalebyDulan.entity.Order;
 import com.example.pointofsalebyDulan.entity.OrderDetails;
 import com.example.pointofsalebyDulan.repo.CustomerRepo;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,7 +42,7 @@ public class OrderServiceIMPL implements OrderService {
 
     @Override
     @Transactional
-    public String addOrder(RequestOrderSaveDto requestOrderSaveDto) {
+    public String addOrder(RequestOrderSaveDTO requestOrderSaveDto) {
         Order order = new Order(
                customerRepo.getById(requestOrderSaveDto.getCustomer()),
                requestOrderSaveDto.getDate(),
@@ -69,6 +71,21 @@ public class OrderServiceIMPL implements OrderService {
 
     List<OrderDetailsInterface> orderDetailsInterfaces = orderRepo.getAllOrders(status, PageRequest.of(page,size));
 
-        return null;
+    List<ResponseOrderDetailsDTO> list = new ArrayList<>();
+
+        for (OrderDetailsInterface o : orderDetailsInterfaces) {
+            ResponseOrderDetailsDTO responseOrderDetailsDTO = new ResponseOrderDetailsDTO(
+              o.getCustomerName(),
+              o. getCustomerAddress(),
+              o.getContactNumbers(),
+              o.getDate(),
+              o.getTotal()
+            );
+            list.add(responseOrderDetailsDTO);
+        }
+
+        PaginatedResponseOrderDetails paginatedResponseOrderDetails = new PaginatedResponseOrderDetails(list,orderRepo.getCount(status));
+
+        return paginatedResponseOrderDetails;
     }
 }

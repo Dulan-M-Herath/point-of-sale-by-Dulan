@@ -11,11 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 
-public class RequestOrderSaveDto {
+public class RequestOrderSaveDTO {
 
     private int customer;
     private Date date;
     private double amount;
     private boolean activeState;
-    private List<RequestOrderDetailsSave> orderDetails;
+    private List<RequestOrderDetailsSaveDTO> orderDetails;
 }

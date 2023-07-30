@@ -1,8 +1,7 @@
 package com.example.pointofsalebyDulan.controller;
 
 import com.example.pointofsalebyDulan.dto.paginated.PaginatedResponseOrderDetails;
-import com.example.pointofsalebyDulan.dto.request.RequestItemSaveDTO;
-import com.example.pointofsalebyDulan.dto.request.RequestOrderSaveDto;
+import com.example.pointofsalebyDulan.dto.request.RequestOrderSaveDTO;
 import com.example.pointofsalebyDulan.service.OrderService;
 import com.example.pointofsalebyDulan.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(path = "/save-item")
-    public ResponseEntity<StandardResponse> addItem(@RequestBody RequestOrderSaveDto requestOrderSaveDto){
+    public ResponseEntity<StandardResponse> addItem(@RequestBody RequestOrderSaveDTO requestOrderSaveDto){
 
         String s = orderService.addOrder(requestOrderSaveDto);
 
@@ -43,12 +42,7 @@ public class OrderController {
         if(stateType.equalsIgnoreCase("active") ||  stateType.equalsIgnoreCase("inactive")){
             boolean status = stateType.equalsIgnoreCase("active") ? true : false;
             paginatedResponseOrderDetails= orderService.getAllOrderDetails(status,page,size);
-
-        }else{
-
         }
-
-
-        return null;
+        return new ResponseEntity<StandardResponse>(new StandardResponse(200,"success",paginatedResponseOrderDetails),HttpStatus.OK);
     }
 }

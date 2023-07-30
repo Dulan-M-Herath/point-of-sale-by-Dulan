@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ResponseOrderDetails {
+public class ResponseOrderDetailsDTO {
 
     //customer
     private String customerName;
